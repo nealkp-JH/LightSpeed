@@ -31,11 +31,14 @@ namespace LightSpeedHarness
 			DateTime end = DateTime.Now;
 			Console.WriteLine(start - end);
 			Console.ReadLine();
+
+			
 		}
 
 		static void ProcessSuitSleeveTraining()
 		{
-			List<Partner> partners = GetUserList("SuitSleeveTraining");
+			//List<Partner> partners = GetUserList("SuitSleeveTraining");
+			List<Partner> partners = GetPartnersFromFile();
 
 			//get ls token
 			string token = LightSpeedAPI.GetToken();
@@ -84,6 +87,31 @@ namespace LightSpeedHarness
 			}
 			return partners;
 
+		}
+
+		public static List<Partner> GetPartnersFromFile()
+		{
+			List<string> l = new List<string>();
+			string line;
+			List<Partner> partners = new List<Partner>();
+			//Console.WriteLine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+			//Console.ReadLine();
+			// Read the file and display it line by line.
+			System.IO.StreamReader file = new System.IO.StreamReader( "book1.csv");
+			while ((line = file.ReadLine()) != null)
+			{
+				Partner p = new Partner();
+				string[] props = line.Split(',');
+				p.PartnerId = int.Parse(props[0]);
+				p.FirstName = props[2];
+				p.LastName = props[3];
+				p.Email = props[1];
+				partners.Add(p);
+			}
+
+			file.Close();
+			
+            return partners;
 		}
 		
 	}
